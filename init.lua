@@ -104,8 +104,8 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Shortcuts
-vim.api.nvim_set_keymap('n', '<Leader>init', ':edit ~/.config/nvim/init.lua<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>src', ':source ~/.config/nvim/init.lua<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>init', ':edit $HOME/.config/nvim/init.lua<CR>', { noremap = true, silent = true })
+--vim.api.nvim_set_keymap('n', '<Leader>src', ':source ~/.config/nvim/init.lua<CR>', { noremap = true, silent = true })
 vim.keymap.set({ 'n', 'v' }, '<Ctrl>u', '<Ctrl>uzz', { noremap = true, silent = true }) -- place cursor in middle of screen after scrolling
 vim.keymap.set({ 'n', 'v' }, '<Ctrl>d', '<Ctrl>dzz', { noremap = true, silent = true }) -- place cursor in middle of screen after scrolling
 
