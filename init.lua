@@ -96,6 +96,9 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Move half page up and center the cursor' })
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Move half page down and center the cursor' })
+
 -- Shortcuts
 vim.api.nvim_set_keymap('n', '<Leader>init', ':edit $HOME/.config/nvim/init.lua<CR>', { noremap = true, silent = true })
 --vim.api.nvim_set_keymap('n', '<Leader>src', ':source ~/.config/nvim/init.lua<CR>', { noremap = true, silent = true })
