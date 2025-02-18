@@ -15,7 +15,9 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
+--
+vim.opt.wrap = false
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -99,10 +101,18 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Move half page up and center the cursor' })
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Move half page down and center the cursor' })
 
+vim.keymap.set('n', '<Leader>g', ':Neogit<CR>', { desc = 'Open Neogit (status)' })
+
+vim.keymap.set('n', '<Leader>ww', ':set wrap!<CR>', { desc = 'Toggle line wrapping' })
+vim.keymap.set('n', '<Leader>q', ':tabclose<CR>', { desc = 'Close current tab' })
+vim.keymap.set('n', '<Leader><Tab>', ':tabnext<CR>', { desc = 'Close current tab' })
+
 -- Shortcuts
 vim.api.nvim_set_keymap('n', '<Leader>init', ':edit $HOME/.config/nvim/init.lua<CR>', { noremap = true, silent = true })
 --vim.api.nvim_set_keymap('n', '<Leader>src', ':source ~/.config/nvim/init.lua<CR>', { noremap = true, silent = true })
 vim.keymap.set({ 'n', 'v' }, '<Ctrl>u', '<Ctrl>uzz', { noremap = true, silent = true }) -- place cursor in middle of screen after scrolling
+vim.keymap.set({ 'n', 'v' }, '<Ctrl>d', '<Ctrl>dzz', { noremap = true, silent = true }) -- place cursor in middle of screen after scrolling
+
 vim.keymap.set({ 'n', 'v' }, '<Ctrl>d', '<Ctrl>dzz', { noremap = true, silent = true }) -- place cursor in middle of screen after scrolling
 
 -- [[ Basic Autocommands ]]
