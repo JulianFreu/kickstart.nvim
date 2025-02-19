@@ -105,7 +105,7 @@ vim.keymap.set('n', '<Leader>g', ':Neogit<CR>', { desc = 'Open Neogit (status)' 
 
 vim.keymap.set('n', '<Leader>ww', ':set wrap!<CR>', { desc = 'Toggle line wrapping' })
 vim.keymap.set('n', '<Leader>q', ':tabclose<CR>', { desc = 'Close current tab' })
-vim.keymap.set('n', '<Leader><Tab>', ':tabnext<CR>', { desc = 'Close current tab' })
+vim.keymap.set('n', '<Leader><Tab>', ':tabnext<CR>', { desc = 'Switch to next tab' })
 
 -- Shortcuts
 vim.api.nvim_set_keymap('n', '<Leader>init', ':edit $HOME/.config/nvim/init.lua<CR>', { noremap = true, silent = true })
