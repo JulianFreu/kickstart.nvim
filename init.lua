@@ -107,6 +107,8 @@ vim.keymap.set('n', '<Leader>ww', ':set wrap!<CR>', { desc = 'Toggle line wrappi
 vim.keymap.set('n', '<Leader>q', ':tabclose<CR>', { desc = 'Close current tab' })
 vim.keymap.set('n', '<Leader><Tab>', ':tabnext<CR>', { desc = 'Switch to next tab' })
 
+vim.keymap.set('n', '<Leader>wd', ':%s/\\s\\+$//e<CR>', { desc = 'delete trailing whitespace' })
+
 -- Shortcuts
 vim.api.nvim_set_keymap('n', '<Leader>init', ':edit $HOME/.config/nvim/init.lua<CR>', { noremap = true, silent = true })
 --vim.api.nvim_set_keymap('n', '<Leader>src', ':source ~/.config/nvim/init.lua<CR>', { noremap = true, silent = true })
@@ -755,13 +757,14 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'rebelot/kanagawa.nvim',
+    'HoNamDuong/hybrid.nvim',
+    --'rebelot/kanagawa.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'kanagawa'
+      vim.cmd.colorscheme 'hybrid'
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
