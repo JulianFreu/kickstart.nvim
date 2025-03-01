@@ -11,13 +11,15 @@ return { -- Highlight, edit, and navigate code
     -- Modules and its options go here
     highlight = {
       enable = true,
-      additional_vim_regex_highlighting = { 'ruby' },
+      additional_vim_regex_highlighting = true,
     },
-    indent = { enable = true, disable = { 'ruby' } },
+    indent = { enable = true },
     incremental_selection = { enable = true },
     --textobjects = { enable = true },
     context = { enable = true },
   },
+  -- Highlight the @foo.bar capture group with the "Identifier" highlight group
+  vim.api.nvim_set_hl(0, '@function', { link = '@function.builtin' }),
   -- There are additional nvim-treesitter modules that you can use to interact
   -- with nvim-treesitter. You should go explore a few and see what interests you:
   --

@@ -110,7 +110,7 @@ vim.keymap.set('n', '<Leader><Tab>', ':tabnext<CR>', { desc = 'Switch to next ta
 vim.keymap.set('n', '<Leader>wd', ':%s/\\s\\+$//e<CR>', { desc = 'delete trailing whitespace' })
 
 -- Shortcuts
-vim.api.nvim_set_keymap('n', '<Leader>init', ':edit $HOME/.config/nvim/init.lua<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>init', ':Oil ~/.config/nvim<CR>', { noremap = true, silent = true })
 --vim.api.nvim_set_keymap('n', '<Leader>src', ':source ~/.config/nvim/init.lua<CR>', { noremap = true, silent = true })
 vim.keymap.set({ 'n', 'v' }, '<Ctrl>u', '<Ctrl>uzz', { noremap = true, silent = true }) -- place cursor in middle of screen after scrolling
 vim.keymap.set({ 'n', 'v' }, '<Ctrl>d', '<Ctrl>dzz', { noremap = true, silent = true }) -- place cursor in middle of screen after scrolling
@@ -120,6 +120,7 @@ vim.keymap.set({ 'n', 'v' }, '<Ctrl>d', '<Ctrl>dzz', { noremap = true, silent = 
 vim.keymap.set({ 'n', 'v' }, '<M-j>', ':cnext<CR>', { noremap = true, silent = true }) -- place cursor in middle of screen after scrolling
 vim.keymap.set({ 'n', 'v' }, '<M-k>', ':cprev<CR>', { noremap = true, silent = true }) -- place cursor in middle of screen after scrolling
 
+vim.api.nvim_set_keymap('n', '<TAB>', '<C-^>', { noremap = true, silent = true, desc = 'Alternate buffers' })
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -146,16 +147,81 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
--- [[ Configure and install plugins ]]
---
---  To check the current status of your plugins, run
---    :Lazy
---
---  You can press `?` in this menu for help. Use `:q` to close the window
---
---  To update plugins you can run
---    :Lazy update
---
 -- NOTE: Here is where you install your plugins.
-require('lazy').setup("plugins")
+require('lazy').setup 'plugins'
 
+vim.cmd.colorscheme 'kanagawa'
+
+local null_ls = require 'null-ls'
+local helpers = require 'null-ls.helpers'
+local vsg_lint = {
+  name = 'VSG',
+  method = null_ls.methods.DIAGNOSTICS,
+  filetypes = { 'vhdl' },
+  generator = helpers.generator_factory {
+    command = 'vsg',
+    args = function(params)
+      local rv = {}
+      -- check if there is a config file in the root directory, if so
+      -- insert the -c argument with it
+      if vim.fn.filereadable(params.root .. '/vsg.json') == 1 then
+        table.insert(rv, '-c=' .. params.root .. '/vsg.json')
+      end
+      table.insert(rv, '--stdin')
+      table.insert(rv, '-of=syntastic')
+      return rv
+    end,
+    cwd = nil,
+    check_exit_code = { 0, 1 },
+    from_stderr = false,
+    ignore_stderr = true,
+    to_stdin = true,
+    format = 'line',
+    multiple_files = false,
+    on_output = helpers.diagnostics.from_patterns {
+      {
+        pattern = [[(%w+).*%((%d+)%)(.*)%s+%-%-%s+(.*)]],
+        groups = { 'severity', 'row', 'code', 'message' },
+        overrides = {
+          severities = {
+            -- 2 is for warnings, nvim showing as an error can be obnoxious. Change if desired
+            ['ERROR'] = 2,
+            ['WARNING'] = 3,
+            ['INFORMATION'] = 3,
+            ['HINT'] = 4,
+          },
+        },
+      },
+    },
+  },
+}
+
+local vsg_format = {
+  name = 'VSG Formatting',
+  method = null_ls.methods.FORMATTING,
+  filetypes = { 'vhdl' },
+  generator = helpers.formatter_factory {
+    command = 'vsg',
+    args = { '-c$ROOT/vsg.json', '-f=$FILENAME', '-of=syntastic', '--fix' },
+    cwd = nil,
+    check_exit_code = function(code, stderr)
+      local success = code <= 1
+      if not success then
+        -- can be noisy for things that run often (e.g. diagnostics), but can
+        -- be useful for things that run on demand (e.g. formatting)
+        print(stderr)
+      end
+      return success
+    end,
+    ignore_stderr = true,
+    to_temp_file = true,
+    from_temp_file = true,
+    to_stdin = false,
+    multiple_files = false,
+  },
+}
+
+null_ls.setup {
+  diagnostics_format = '[#{c}] #{m} (#{s})',
+  sources = { vsg_format, vsg_lint },
+}
