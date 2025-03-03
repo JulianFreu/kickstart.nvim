@@ -121,6 +121,15 @@ vim.keymap.set({ 'n', 'v' }, '<M-j>', ':cnext<CR>', { noremap = true, silent = t
 vim.keymap.set({ 'n', 'v' }, '<M-k>', ':cprev<CR>', { noremap = true, silent = true }) -- place cursor in middle of screen after scrolling
 
 vim.api.nvim_set_keymap('n', '<TAB>', '<C-^>', { noremap = true, silent = true, desc = 'Alternate buffers' })
+
+vim.api.nvim_set_keymap('n', '<C-f>', '/', { noremap = true, silent = true, desc = 'search' })
+
+-- Note shortcuts
+vim.keymap.set('n', '<Leader>nwp', '<Cmd>ObsidianWorkspace personal<CR>', { desc = 'Switch to obsidian workspace "personal"' })
+vim.keymap.set('n', '<Leader>nww', '<Cmd>ObsidianWorkspace work<CR>', { desc = 'Switch to obsidian workspace "work"' })
+vim.keymap.set('n', '<Leader>nd', '<Cmd>ObsidianToday<CR>', { desc = 'Open daily note' })
+vim.keymap.set('n', '<Leader>ni', '<Cmd>edit ~/vaults/personal/Ideen.md<CR>', { desc = 'Open Ideen.md note' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -147,9 +156,16 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
--- NOTE: Here is where you install your plugins.
-require('lazy').setup 'plugins'
+vim.opt.conceallevel = 2
 
+-- NOTE: Here is where you install your plugins.
+require('lazy').setup {
+  spec = {
+    { import = 'plugins' },
+  },
+  checker = { enabled = false },
+  install = { missing = false },
+}
 vim.cmd.colorscheme 'kanagawa'
 
 local null_ls = require 'null-ls'
@@ -223,5 +239,5 @@ local vsg_format = {
 
 null_ls.setup {
   diagnostics_format = '[#{c}] #{m} (#{s})',
-  sources = { vsg_format, vsg_lint },
+  --sources = { vsg_format, vsg_lint },
 }
