@@ -18,6 +18,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 --
 vim.opt.wrap = false
+vim.opt.expandtab = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -128,6 +129,7 @@ vim.api.nvim_set_keymap('n', '<C-f>', '/', { noremap = true, silent = true, desc
 vim.keymap.set('n', '<Leader>nwp', '<Cmd>ObsidianWorkspace personal<CR>', { desc = 'Switch to obsidian workspace "personal"' })
 vim.keymap.set('n', '<Leader>nww', '<Cmd>ObsidianWorkspace work<CR>', { desc = 'Switch to obsidian workspace "work"' })
 vim.keymap.set('n', '<Leader>nd', '<Cmd>ObsidianToday<CR>', { desc = 'Open daily note' })
+vim.keymap.set('n', '<Leader>ny', '<Cmd>ObsidianYesterday<CR>', { desc = 'Open yesterdays daily note' })
 vim.keymap.set('n', '<Leader>ni', '<Cmd>edit ~/vaults/personal/Ideen.md<CR>', { desc = 'Open Ideen.md note' })
 
 -- [[ Basic Autocommands ]]
@@ -239,5 +241,5 @@ local vsg_format = {
 
 null_ls.setup {
   diagnostics_format = '[#{c}] #{m} (#{s})',
-  --sources = { vsg_format, vsg_lint },
+  sources = { vsg_format, vsg_lint },
 }
